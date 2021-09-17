@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html>
+    <body onload="speed = 100;">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        div.center {
+            text-align: center;
+            font-size: 20px;
+        }   
+    </style>
+    <pre>
+    <div class="center">
+
+<button onclick="scrollpage()">Autoscroll this GODDAMN PAGE</button>
+--------------------------
+Artist: Ed Sheeran
+Song: "Afterglow"
+Capo: 4th Fret
+Tempo: 104 BPM
+Time 4/4
+--------------------------
+
+Chord Voicings:
+
+<b>G</b>     - 320003
+<b>Cadd9</b> - X32033
+<b>Dsus4</b> - XX0233
+<b>Em7</b>   - 022033
+ 
+ 
+[Intro]
+N.C.
+One, two
+
+[Verse 1]
+<b>G</b>
+ Stop the clocks, it's amazing
+<b>Cadd9</b>
+ You should see the way the light dances off your hair
+<b>Dsus4</b>                  <b>Em7</b>              <b>Cadd9</b>
+ A million colours of hazel, golden and red
+<b>G</b>
+ Saturday morning is fading
+<b>Cadd9</b>
+ The sun's reflected by the coffee in your hand
+<b>Dsus4</b>                         <b>Em7</b>          <b>Cadd9</b>
+  My eyes are caught in your gaze all over again
+
+
+[Pre-Chorus]
+        <b>Cadd9</b>
+We were love drunk, waiting on a miracle
+           <b>G</b>                    <b>Dsus4</b>
+Trying to find ourselves in the winter snow
+   <b>Cadd9</b>                                   <b>G</b>    <b>Dsus4</b>
+So alone in love like the world had disappeared
+      <b>Cadd9</b>                   
+Oh, I won't be silent and I won't let go
+        <b>G</b>                        <b>Dsus4</b>
+I will hold on tighter 'til the afterglow
+          <b>Cadd9</b>                                     <b>G</b>    <b>Dsus4</b>
+And we'll burn so bright 'til the darkness softly clears
+
+
+[Chorus]
+           <b>Cadd9</b>                  <b>G</b>     <b>Dsus4</b>
+Oh, I will hold on to the afterglow
+           <b>Cadd9</b>                  <b>G</b>
+Oh, I will hold on to the afterglow
+
+
+[Verse 2]
+<b>G</b>
+ The weather outside's changing
+<b>Cadd9</b>
+ The leaves are buried under six inches of white
+<b>Dsus4</b>           <b>Em7</b>           <b>Cadd9</b>
+ The radio is playing, Iron & Wine
+<b>G</b>
+ This is a new dimension
+<b>Cadd9</b>
+ This is a level where we're losing track of time
+<b>Dsus4</b>                  <b>Em7</b>                      <b>Cadd9</b>
+ I'm holding nothing against it, except you and I
+
+
+[Pre-Chorus]
+        <b>Cadd9</b>
+We were love drunk, waiting on a miracle
+           <b>G</b>                     <b>Dsus4</b>
+Trying to find ourselves in the winter snow
+   <b>Cadd9</b>                                   <b>G</b>    <b>Dsus4</b>
+So alone in love like the world had disappeared
+      <b>Cadd9</b>
+Oh, I won't be silent and I won't let go
+       <b>G</b>                         <b>Dsus4</b>
+I will hold on tighter 'til the afterglow
+          <b>Cadd9</b>                                     <b>G</b>     <b>Dsus4</b>
+And we'll burn so bright 'til the darkness softly clears
+
+
+[Chorus]
+           <b>Cadd9</b>                   <b>G</b>   <b>Dsus4</b>
+Oh, I will hold on to the afterglow
+           <b>Cadd9</b>                   <b>G</b>   <b>Dsus4</b>
+Oh, I will hold on to the afterglow
+           <b>Cadd9</b>   N.C.
+Oh, I will hold on to the afterglow
+<script>
+document.addEventListener("keyup", function(event) {
+    if (event.key === '+' && speed != 0) {speed -= 100;}
+    else if (event.key === '-') {speed += 100;}
+});
+function scrollpage() {
+    var i = 0;
+    var page_len = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    function scroll() {
+        currentPosition = document.documentElement.scrollTop;
+        if (i < currentPosition || i > currentPosition) { i = currentPosition; }
+        i += 5;
+        window.scrollTo(0,i);
+        if(i >= page_len){  return; }
+        setTimeout(scroll, speed);
+    }scroll();
+}
+</script>
+</div></pre>
+    </body>
+</html>
