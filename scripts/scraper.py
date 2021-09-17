@@ -113,3 +113,12 @@ class Scraper:
 
     def get_final_url(self):
         return self.final_url
+
+    def update_song(self, update):
+        """
+        this method is used when receiving suggestions (complex mode is on)
+
+        :param update:
+        :return:
+        """
+        self.song = update
