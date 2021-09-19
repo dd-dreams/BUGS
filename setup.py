@@ -10,6 +10,8 @@ setup(
     url='https://github.com/dd-dreams/BUGS',
     author='dd-dreams',
     license='MIT',
-    packages=find_packages()
+    packages=find_packages(),
+    install_requires=[i.rstrip() for i in open("requirements.txt")],
+    python_requires="~=3.7"
 )
 

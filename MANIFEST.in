@@ -2,3 +2,6 @@ include README.md
 include LICENSE
 include requirements.txt
 include AUTHORS
+exclude __pycache__
+include scripts/constants
+recursive-include scripts/*
