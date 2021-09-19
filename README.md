@@ -35,6 +35,7 @@ the script had found. Next you choose the final song, and it will output to a te
 and open that file for you. Easy as that.
 
 `--complex`: Optional search tool. Using the search bar in the ultimate-guitar site, and gives you suggestions, until you choose the final keywords.
+
 `--dont-delete`: As it had been said before, the script is creating a temporary HTML file to view the final chords, and then being deleted after the file had been opened.
 If you want, you can choose to not delete the temporary HTML file, but it will be deleted when the next search happens.
 ***

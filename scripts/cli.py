@@ -52,7 +52,7 @@ def complex(search_obj, starter):
     :return:
     """
     search_obj.update_song(starter)
-    suggestions = json.loads(search_obj.suggestions())["suggestions"]
+    suggestions = search_obj.suggestions()
     first = True  # is the first time the user searches
     while starter not in suggestions or len(suggestions) != 1:
         if "403" in suggestions:  # it means the user inputted an exact song name, or there are no results
@@ -60,6 +60,7 @@ def complex(search_obj, starter):
                 return starter
             print_status(SONGS_NOT_FOUND, ERROR_COLOR)
             continue
+        suggestions = json.loads(search_obj.suggestions())["suggestions"]
         for ind, suggestion in enumerate(suggestions, start=1):
             print_status(f"[{ind}] {suggestion}")
         starter = input("Search (Enter for search results): ")
