@@ -5,7 +5,6 @@ import json
 from bs4 import BeautifulSoup
 from constants.html_classes import HTML_DATA
 import search
-import fake_headers
 
 
 class Scraper:
