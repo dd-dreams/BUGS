@@ -137,6 +137,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
+        if len(args.search) == 0:
+            print_status(NO_SEARCH, ERROR_COLOR)
+            sys.exit(0)
         if args.complex:
             search = search.Search()
             song = complex(search, args.search)
