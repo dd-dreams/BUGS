@@ -9,9 +9,10 @@ SUCCESS_CHORDS = "Successfully output chords"
 ALREADY_SCRAPED = "You already scraped this song. Check in cached_sites folder."
 OUTPUTTING_MSG = "Outputting chords"
 FILE_NOT_EXIST = "You didn't scrape or output, try again after you did."
-DESCRIPTION = """
+LONG_DESCRIPTION = """
 Scrape Ultimate Guitar website with no tracking, fast, easy, and lightweight.
 You can parse arguments and get instant results.
 Enjoy!
 
 """
+DESCRIPTION="Scrape Ultimate Guitar site with no tracking, fast, easy."

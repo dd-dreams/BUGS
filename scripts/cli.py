@@ -129,7 +129,7 @@ def get_path_current_song(name):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    parser = argparse.ArgumentParser(description=LONG_DESCRIPTION)
     parser.add_argument('search', help="Search for a song")
     parser.add_argument('-u', '--url', help="Specific url to scrape from")
     parser.add_argument('-c', '--complex', help="Complex mode. Adding search suggestions", action="store_true")
