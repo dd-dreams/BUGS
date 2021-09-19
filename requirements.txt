@@ -1,5 +1,5 @@
-termcolor~=1.1.0
-colorama~=0.4.4
+termcolor
 requests~=2.26.0
 bs4~=0.0.1
 lxml
+fake_headers

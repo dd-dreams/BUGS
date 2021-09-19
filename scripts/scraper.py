@@ -5,23 +5,22 @@ import json
 from bs4 import BeautifulSoup
 from constants.html_classes import HTML_DATA
 import search
+import fake_headers
 
 
 class Scraper:
-    def __init__(self, artist, song, url=None):
+    def __init__(self, song, url=None):
         """
         Constructor
 
-        :param artist: specified artist
         :param song: specified song
         :param url: url song, by default None and will try to search for the song
         """
         self.__elements = []
-        self.artist = artist
         self.song = song
         self.data = None
         self.search_results = None
-        self.search = search.Search(artist, song, url)
+        self.search = search.Search(song, url)
         self.final_url = url
         self.re_soup = lambda: BeautifulSoup(self.search.get_html(), "lxml") if self.search.get_html() else None
         self.__soup = self.re_soup()
@@ -107,9 +106,6 @@ class Scraper:
 
     def get_song(self):
         return self.song
-
-    def get_artist(self):
-        return self.artist
 
     def get_final_url(self):
         return self.final_url

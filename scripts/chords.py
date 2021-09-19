@@ -1,13 +1,18 @@
 import os
-from constants.other import CACHED_SITES
+from constants.other import CACHED_SITES, TMP
 import modify_html
 
 
 class Chords:
-    def __init__(self, name, artist, chords):
+    def __init__(self, chords):
+        """
+        Constructor
+
+        :param name: name of the file
+        :param chords: chords to output
+        """
         self.chords_class = "chords"
-        self.name = (name.replace(' ', '_') + ".html").replace('"', '')
-        self.artist = artist.replace('"', '')
+        self.name = TMP
         self.chords = chords
 
     @staticmethod
@@ -34,13 +39,11 @@ class Chords:
         also made the chords bold
         :return:
         """
-        if not os.path.exists(CACHED_SITES):
-            os.makedirs(CACHED_SITES)
-        with open(os.path.join(CACHED_SITES, self.name), "w+") as file:  # writing the chords
+        with open(self.name, "w+") as file:  # writing the chords
             file.write(self.chords)
-        with open(os.path.join(CACHED_SITES, self.name), "r") as file:  # reading the chords
+        with open(self.name, "r") as file:  # reading the chords
             lines = file.readlines()
-        with open(os.path.join(CACHED_SITES, self.name), "w+") as chords_html:  # changing the html
+        with open(self.name, "w+") as chords_html:  # changing the html
             self.add_basic_html(chords_html, True)
             modify_html.add_button(chords_html)
             for line in lines:  # making chords bold, and removing [tab] tags or whatever are those

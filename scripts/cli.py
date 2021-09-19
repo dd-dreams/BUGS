@@ -5,10 +5,9 @@ import scraper
 import chords
 import search
 import sys
-from colorama import init
 import argparse
 from constants.messages import *
-from constants.other import CACHED_SITES
+from constants.other import CACHED_SITES, TMP
 import os
 import webbrowser
 import json
@@ -27,9 +26,9 @@ def print_status(text, status=None):
         print(ERROR_COLOR, colored(text, 'yellow'))
 
 
-def open_command(path):
-    if os.path.isfile(path.replace(" ", "_")):
-        webbrowser.open(path.replace(" ", "_"))
+def open_command():
+    if os.path.isfile(TMP):
+        webbrowser.open(TMP)
     else:
         print_status(FILE_NOT_EXIST, ERROR_COLOR)
 
@@ -40,42 +39,46 @@ def choose_song(scraper_obj):
     return chosen
 
 
-def check_in_cache(name):
-    name += ".html"
-    file = os.path.join(CACHED_SITES, name)
-    return os.path.isfile(file)
-
-
 def clear():
     os.system("cls" if sys.platform == "win32" else "clear")
 
 
-def complex(search_obj):
+def complex(search_obj, starter):
     """
     complex mode TODO: Add better doc
 
+    :param search_obj: search object
+    :param starter: user most specify when using arguments the starting search
     :return:
     """
-    inp = ""
-    suggestions = []
-    while inp not in suggestions:
-        inp = input("Search (Enter for search results): ")
-        if inp.isdigit() and len(suggestions) > 0:
-            if int(inp) - 1 > len(suggestions) - 1 or int(inp) - 1 < 0:
-                print_status("Search result does not exist (index out of bounds)", "red")
-                continue
-            return suggestions[int(inp) - 1]
-        clear()
-        search_obj.update_song(inp)
-        suggestions = search_obj.suggestions()
+    search_obj.update_song(starter)
+    suggestions = json.loads(search_obj.suggestions())["suggestions"]
+    first = True  # is the first time the user searches
+    while starter not in suggestions or len(suggestions) != 1:
         if "403" in suggestions:  # it means the user inputted an exact song name, or there are no results
-            print_status(SONGS_NOT_FOUND, "red")
+            if first:
+                return starter
+            print_status(SONGS_NOT_FOUND, ERROR_COLOR)
             continue
-        suggestions = json.loads(suggestions)["suggestions"]
         for ind, suggestion in enumerate(suggestions, start=1):
             print_status(f"[{ind}] {suggestion}")
+        starter = input("Search (Enter for search results): ")
+        if starter in suggestions:
+            return starter
+        if starter == "":
+            print_status(NO_SEARCH, ERROR_COLOR)
+            continue
+        if starter.isdigit() and len(suggestions) > 0:
+            if int(starter) - 1 > len(suggestions) - 1 or int(starter) - 1 < 0:
+                print_status("Search result does not exist (index out of bounds)", "red")
+                continue
+            return suggestions[int(starter) - 1]
+        clear()
+        search_obj.update_song(starter)
+        suggestions = json.loads(search_obj.suggestions())["suggestions"]
+        first = False
     print()
-    return inp
+    return starter
 
 
 def scrape(scraper_obj):
@@ -86,8 +89,8 @@ def scrape(scraper_obj):
 
     :return:
     """
-    if scraper_obj.get_song() is None and scraper_obj.get_artist() is None:
-        print_status(NO_SONG_OR_ARTIST, ERROR_COLOR)
+    if scraper_obj.get_song() is None:
+        print_status(NO_SEARCH, ERROR_COLOR)
         return False
     if scraper_obj.get_final_url() is None:
         print_status(FETCHING_RESULTS)
@@ -104,11 +107,12 @@ def scrape(scraper_obj):
                 print_status("FINAL PAGE", "red")
                 page -= 1
             chosen_song = choose_song(scraper_obj)
-        chosen_song = int(chosen_song)
+        chosen_song = int(chosen_song) - 1
         scraper_obj.set_final_url(chosen_song)
+        scraper_obj.update_song(scraper_obj.search_results[chosen_song]['song_name'])
     scraper_obj.get_info()
     final_chords = scraper_obj.get_chords()
-    chords_obj = chords.Chords(scraper_obj.get_song(), scraper_obj.get_artist(), final_chords)
+    chords_obj = chords.Chords(final_chords)
     print_status(OUTPUTTING_MSG)
     chords_obj.output_chords()
     print_status(SUCCESS_CHORDS)
@@ -125,33 +129,24 @@ def get_path_current_song(name):
 
 
 if __name__ == '__main__':
-    init()  # sometimes the colors do not appear good on some platforms, init() fix it
     parser = argparse.ArgumentParser(description=DESCRIPTION)
-    parser.add_argument('-s', '--song', help="Provide song")
-    parser.add_argument('-a', '--artist', help="Provide artist")
-    parser.add_argument('-o', '--open', help="Open HTML file in browser after scraped", action="store_true")
+    parser.add_argument('search', help="Search for a song")
     parser.add_argument('-u', '--url', help="Specific url to scrape from")
     parser.add_argument('-c', '--complex', help="Complex mode. Adding search suggestions", action="store_true")
+    parser.add_argument('--dont-delete', help="Don't delete the tmp (HTML FILE) file when the script is ended.", action="store_true")
     args = parser.parse_args()
 
-    # if no args supplied, display help message
-    if len(sys.argv) == 1:
-        parser.print_help(sys.stderr)
-        sys.exit(0)
     try:
-        artist = ""
-        song = ""
-        if args.artist is not None:
-            artist = args.artist
-        if args.song is not None:
-            song = args.song
         if args.complex:
             search = search.Search()
-            song = complex(search)
-        scrap = scraper.Scraper(artist, song, args.url)
+            song = complex(search, args.search)
+        scrap = scraper.Scraper(args.search, args.url)
         if scrape(scrap) is False:
             sys.exit(0)
-        if args.open:
-            open_command(get_path_current_song(scrap.get_song()))
+        open_command()
+        if not args.dont_delete:
+            import time
+            time.sleep(1)
+            os.remove(TMP)
     except KeyboardInterrupt:
         print("\nBye")
