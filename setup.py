@@ -4,7 +4,7 @@ from scripts.constants.messages import LONG_DESCRIPTION, DESCRIPTION
 
 setup(
     name='BUGS',
-    version='0.0.0',
+    version='1.0.0',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     url='https://github.com/dd-dreams/BUGS',
